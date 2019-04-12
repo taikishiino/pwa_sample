@@ -1,9 +1,9 @@
 # pwa_sample
 
-$ npm install
+    $ npm install
 
-$ npm run start
+    $ npm run start
 
 // プッシュ通知送信
-
-$ npm run push
+    
+    $ npm run push
