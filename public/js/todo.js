@@ -100,12 +100,22 @@ $(function() {
         todos: this.__todos
       });
       // Service Workerのキャッシュを更新します（第5章）
+        const channel = new MessageChannel();
+        navigator.serviceWorker.controller
+        .postMessage({
+            url: DOMAIN + '/todos/' + TODO,
+            todos: me.__todos
+        }, [channel.port2]);
     },
     // Todoを追加する処理
     addTodo: function(todo) {
       return new Promise(function(res, rej) {
         // オフライン時の処理（第6章で追加）
-        
+        if(!navigator.online) {
+            queues.add.push(todo);
+            localStorage.setItem('addQuery', JSON.stringify(queues.add));
+            return res({todo: todo});
+        }
         // オンライン時の処理
         // サーバに登録
         $.ajax({
@@ -141,6 +151,7 @@ $(function() {
     },
     // オンライン復帰時の処理（第6章用）
     '{window} online': function(context) {
+        this.executeQueue(queues);
     }
   };
   h5.core.controller('.container', todoController);

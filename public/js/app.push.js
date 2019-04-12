@@ -5,11 +5,7 @@
     return;
   }
   // KEYを生成した公開鍵に書き換えます
-  const key = 'KEY';
-  if (key === 'KEY') {
-    alert('KEYを書き換えてください');
-    return;
-  }
+  const key = 'BHFTQ7YkS7J3X6qB32WPgKSrMa8XKDvBo-iRGmt7yc_fGXEfCXIMV0KBbeaA2GBSEstcuxZCxiOn8IS10BGTufQ'
   // キーを変換します
   const convertedVapidKey = urlBase64ToUint8Array(key);
   // Service Workerのインストール

@@ -51,9 +51,34 @@ self.addEventListener('activate', function(event) {
 // ネットワークアクセス時に使われるfetchイベント
 self.addEventListener('fetch', async (event) => {
   // ここに記述してください（第4章）
+    event.respondWith(
+        fetch(event.request)
+        .then(response => {
+            // 2回目はswの処理はしる
+            console.log(response);
+            return response;
+        },
+            error => {
+                return caches.match(event.request)
+            })
+    )
 });
 
 // Todoの一覧を更新する処理（第5章）
+self.addEventListener('message', function(event) {
+    caches.open(CACHE_NAME)
+        .then(cache => {
+            console.log(cache);
+            const res = new Response(JSON.stringify(event.data.todos), {
+                headers: {
+                    'Content-type': 'application/json'
+                }
+            });
+            cache.put(event.data.url, res);
+        })
+});
+
+
 
 // Webプッシュ通知の処理（第7章）
 self.addEventListener('push', ev => {
